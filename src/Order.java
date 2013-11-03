@@ -1,10 +1,12 @@
 public class Order {
 	public static String clientName;
+	public String shopTitle;
 	public double price;
-	private  int productId;
-	private  int quality;
-	private  int count;	
-	private  int delivery;
+	private String status;
+	private int productId;
+	private int quality;
+	private int count;	
+	private int delivery;
 	private double advance;
 	private double remain;
 	
@@ -21,11 +23,25 @@ public class Order {
 	public int getQuality() {
 		return quality ;
 	}
+		
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getDelivery() {
+		return delivery ;
+	}
 	
 	public void setAdvance(double money) {
+		setStatus("advancepay");
 		advance=money;
 	}
 	public void setRemain(double money) {
+		setStatus("remainpay");
 		remain=money;
 	}
 }
