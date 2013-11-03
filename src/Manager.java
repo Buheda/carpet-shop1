@@ -4,20 +4,22 @@ public class Manager {
 	private Product[] assortiment;
 
 	public Manager(String mngName){
+		//get manager to work
 		name=mngName;
 	}
 
 	public void setAssortiment(Product[] productsList){
 		assortiment=productsList;
-		Administrator.setAssortiment(assortiment);
+		Shop.administrator.setAssortiment(assortiment);
 	}	 
 
 	public Product[] getAssortiment(){
 		return assortiment;
 	}
 
-	public void getAccount(){
-		Supplier.setPayAccount(Administrator.payAccount(Supplier.createAccount()));
+	public void getOrder(Order order){
+		
+		Supplier.setPayAccount(Shop.administrator.payAccount(Shop.supplier.createAccount(),order));
 	}
 	
 	public void sentProduct(String place){

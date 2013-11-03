@@ -1,22 +1,30 @@
 public class Client {
-//сроки ожидания заказа в днях
-private static int waitTime;
-//сколько денег у клиента 
-private static double money;
-private static int quality;
-public static int count;
-public static String name;
+public String name;
+private double money;
+public int count;
+private int quality;
+private int waitTime;
 
-public static boolean toBuy(int prQuality, double price, int time) {
+public Client(String clName,int clWaitTime,double clMoney,int clQuality, int clCount) {
+	name=clName;
+	money=clMoney;
+	quality=clQuality;
+	waitTime=clWaitTime;
+	count=clCount;
+}
+
+public boolean toBuy(int prQuality, double price, int time) {
 	return ((prQuality>=quality)&&(price<=money)&&(time<=waitTime));
 		}
 
-public static void payAdvance(Order order,double advance) {
-	order.setAdvance(advance);
+public double payAdvance(Order order) {
+	double advance=order.price/100*70;
+	//order.setAdvance(advance);
 	money=money-advance;	
+	return advance;
 	}
 
-public static void payRemain(Order order) {
+public void payRemain(Order order) {
 	//клиент пришел
 	//клиент оплачивает остаток по заказу
 	order.setRemain(money);

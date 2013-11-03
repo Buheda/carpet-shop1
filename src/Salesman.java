@@ -1,9 +1,11 @@
 public class Salesman {
-//массив всей продукции
-public static Product[] products;
-public static int discount;	
+	public String name;	
 
-	public static void main(String[] args) {
+	public Salesman(String slsName) {
+	name=slsName;
+	}
+
+	/*public static void main(String[] args) {
 		int productType=0 ;
 		for (int i=0;i<products.length;i++)
 			{
@@ -94,5 +96,10 @@ public static int discount;
 		Client.happyClient();
 	}
 	
+	public static void sentProduct(String place){
+		//If (Product.getPlace()=="sklad")
+			//Salesman.sentProduct(УskladФ));
+	}
+	*/
 	
 }

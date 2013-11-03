@@ -1,27 +1,35 @@
 //информация о товарах
 public class Product {
-	//кач-во товара
-	public static int quality;
-	//цена товара
-	public static int price;
+	public int id;
+	public String title;
+	private String place;
+	public int quality;
+	public double price;
+	private int existCount;
+	private int deliveryTime;
+	private int createTime;
 	
-	//сколько есть на складе
-	private static int existCount;
-	//время доставки готовой продукции со склада
-	private static int delivery;
-	//время на изготовление 1-й ед. изделия
-	private static int createTime;
-	
-	private static int getExistCount() {
+	private int getExistCount() {
 		return existCount;
 	}		
+	public Product(int idProduct,String prTitle,double prPrice, int prQuality){
+	id=idProduct;
+	title=prTitle;
+	price=prPrice;
+	quality=prQuality;
+	}
+	
 	public int getTermOfDelivery(int count) {
 		if (count<=getExistCount())
-				return delivery;
-		else return delivery+createTime*(count-getExistCount());
+				return deliveryTime;
+		else return deliveryTime+createTime*(count-getExistCount());
 	}
 	
 	public int getQuality() {
 		return quality;
 		}	
+	
+	public String getPlace() {
+		return place;
+		}
 }
