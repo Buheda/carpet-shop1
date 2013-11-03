@@ -10,13 +10,13 @@ public class Administrator {
 	}
 
 	public double getPriceMeasuring(HashMap<String, Double> listMaterials){
-		double summaryPrice=listMaterials.get("workPrice");		
+		double priceMeasuring=listMaterials.get("workPrice");		
 		int i,j;
 		for (i=1;i<listMaterials.size();i++){
 			for (j=0;j<Shop.assortiment.length;j++)
-				summaryPrice+=listMaterials.get(Shop.assortiment[j].title);	
+				priceMeasuring+=listMaterials.get(Shop.assortiment[j].title);	
 		}
-		return summaryPrice;		
+		return priceMeasuring;		
 	}
 			
 	public Order createOrder(String clName, int idProduct,int prCount, int prQuality, double prPrice){
@@ -25,21 +25,29 @@ public class Administrator {
 						prCount,
 						prQuality,
 						prPrice,
-						Shop.assortiment[idProduct].getTermOfDelivery(prCount));
-		
-	}
-	public void toProcessAdvance(Order order,Client client){
-		
-		order.setAdvance(client.payAdvance(order));
+						Shop.assortiment[idProduct].getTermOfDelivery(prCount));		
 	}
 	
 	public void setAssortiment(Product[] newAssortiment) {
 		Shop.setAssortiment(newAssortiment);		
 	}
-
-	public Object payAccount(Object createAccount, Order order) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void getAdvance(Order order,Client client){
+		//client pay advance and admin set advance in order
+		double money=client.payAdvance(order);
+		Shop.cashdesk+=money;
+		order.setAdvance(money);
+	}
+	public void getRemain(Order order,Client client){
+		//client pay remain and admin set remain in order
+		double money=client.payRemain(order);
+		Shop.cashdesk+=money;
+		order.setRemain(money);		
+	}
+	
+	public boolean payAccount(String account, Order order) {
+		//administrator pay bankAccount of supplier
+		return true;
 	}
 
 }
