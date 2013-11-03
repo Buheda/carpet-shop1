@@ -1,27 +1,31 @@
+import java.util.HashMap;
+
 public class Order {
-	public static String clientName;
 	public String shopTitle;
+	public String clientName;
+	public int clientId;
+	public String clientPhone;
+	public int productId;
 	public double price;
+	public HashMap<String, Integer> listMaterials;
+	public int quality;
+	public int delivery;
 	private String status;
-	private int productId;
-	private int quality;
-	private int count;	
-	private int delivery;
 	private double advance;
 	private double remain;
 	
-	public Order(String clName, int idProduct, int prCount, int prQuality,
-			double prPrice, int termOfDelivery) {
-		clientName=clName;
+	public Order(String title,int clId,
+			int idProduct,double summaryPrice, HashMap<String, Integer> materials, int prQuality,
+			 int termOfDelivery) {
+		shopTitle=title;
+		clientId=clId;
+		clientName=Shop.getClientsFromBook(clId).name;
+		clientPhone=Shop.getClientsFromBook(clId).getClientPhone();
 		productId=idProduct;
-		count=prCount;
-		quality=prQuality;
-		price=prPrice;
-		delivery=termOfDelivery;
-	}
-
-	public int getQuality() {
-		return quality ;
+		listMaterials=materials;
+		price=summaryPrice;
+		quality=prQuality;		
+		delivery=termOfDelivery;		
 	}
 		
 	public String getStatus() {
@@ -32,10 +36,6 @@ public class Order {
 		this.status = status;
 	}
 
-	public int getDelivery() {
-		return delivery ;
-	}
-	
 	public void setAdvance(double money) {
 		setStatus("advancepay");
 		advance=money;
