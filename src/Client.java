@@ -40,10 +40,11 @@ public class Client {
 	
 	public void receiveMsg(String msg, int orderId) {
 		if (msg.equals("Product in shop")){
-			payRemain(orderId);
+			Shop.administrator.getRemain(orderId);
 			}
 		}
-	public static void happyClient() {
-		System.out.print("i'm happy");
-		}
+	
+	public void installComplete() {
+		System.out.print("i'm happy");	
+	}
 }

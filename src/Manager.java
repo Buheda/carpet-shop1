@@ -1,40 +1,40 @@
+import java.util.ArrayList;
+
 
 public class Manager {
 	public String name;
-	private Product[] assortiment;
+	private ArrayList<Product> assortment;
 
 	public Manager(String mngName){
 		//get manager to work
-		name=mngName;
+		name=mngName;		
 	}
 
-	public void setAssortiment(Product[] productsList){
-		assortiment=productsList;
-		Shop.administrator.setAssortiment(assortiment);
+	public void setAssortment(ArrayList<Product> productsList){
+		assortment=productsList;
+		Shop.administrator.setAssortment(assortment);
 	}	 
 
-	public Product[] getAssortiment(){
-		return assortiment;
+	public ArrayList<Product> getAssortment(){
+		return assortment;
 	}
 
 	public void getOrder(int orderId){
-		if (Shop.administrator.payAccount(Shop.supplier.createAccount(orderId),orderId))
+		Order order= Shop.getOrderFromBook(orderId);
+		if (Shop.administrator.payAccount(Shop.supplier.createAccount(order.shopTitle,order.clientName,order.productId,order.price,order.quality), orderId))
 			{
-			Supplier.setPayAccount(orderId,"prepaid");	
+			Shop.getOrderFromBook(orderId).setStatus("prepaid");
+			Supplier.setPayAccount(orderId);	
 			}
 		//if account - class - we may use this structure: 
 		//Supplier.setPayAccount(Shop.administrator.payAccount(Shop.supplier.createAccount(),order));
 	}
 	
-	public void sentProduct(int orderId, Product pr){
-		Order order=Shop.getOrderFromBook(orderId);
+	public void sentProduct(int orderId){
+		Order order=Shop.getOrderFromBook(orderId);		 
 		if (order.getStatus().equals("send"))
-			{
-			//Thread.currentThread().sleep(1000*60*60*24*order.getDelivery);
-			//we wait order.getDelivery days to bring product and then
-			  if (order.getStatus().equals("storage"))
-			     Shop.salesman.sentProduct(orderId,pr);
-			}
-	}
+		    // manager send message that product was sent
+			Shop.salesman.sentProduct(orderId);
+		}
 
 }

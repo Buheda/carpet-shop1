@@ -4,7 +4,7 @@ import java.util.HashMap;
 public class Shop {
 	public static String title;
 	public static String owner;
-	public static Product[] assortiment;	
+	public static ArrayList<Product>  assortment;	
 	public static Manager manager;
 	public static Supplier supplier;
 	public static Mounter mounter;
@@ -13,14 +13,16 @@ public class Shop {
 	public static Shop shop; 
 	private static double cashdesk;
 	//we can transmit Client and Order as instants of class, or as link on Book of instances
-	private static ArrayList clientsBook; 	
-	private static ArrayList ordersBook; 
+	private static ArrayList<Client> clientsBook; 	
+	private static ArrayList<Order> ordersBook;
+	public static ArrayList<Product> storage;	
 	
 	
-	public Shop(String title, String owner, Product[] assortiment, Administrator administrator, 
+	
+	public Shop(String title, String owner, Product[] assortment, Administrator administrator, 
 			Manager manager, Salesman salesman,Supplier supplier){
 		this.title=title;
-		this.assortiment=manager.getAssortiment();
+		this.assortment=manager.getAssortment();
 		this.administrator=administrator;
 		this.manager=manager;
 		this.salesman=salesman;
@@ -49,43 +51,55 @@ public class Shop {
 		
 
 		//salesman talk with client and decided what product will be install id=5
-		int prId=5;		
-		double summaryPrice=assortiment[prId].price*client.count;		
-		
-		
-		if (client.toBuy(assortiment[prId].quality, summaryPrice, assortiment[prId].getTermOfDelivery(client.count)))
-		{
-		
-		HashMap<String, Integer> listMaterials=null;
-		int count= client.count;
-		
-		//quality depends on the features of order
-		//in that case nothing special
-		int quality=assortiment[prId].quality;	
-			if (client.doMeasure){
-			listMaterials=mounter.getMeasuring(client.name,client.getClientPhone(),client.getClientAdress(),prId);
-			summaryPrice = administrator.getPriceMeasuring(listMaterials);			
-			if (client.toBuy(quality, summaryPrice, assortiment[prId].getTermOfDelivery(listMaterials.get(assortiment[prId].title)))){
-					count=listMaterials.get(assortiment[prId].title);
+		int prId=5;
+		Product product=getProductFromAssortmentById(prId);
+		if (product==null)
+			System.out.println("Sorry we dont have this product in assortment right now");
+		else
+			{
+			double summaryPrice=product.price*client.count;					
+			if (client.toBuy(product.quality, summaryPrice, product.getTermOfDelivery(client.count)))
+				{
+				HashMap<String, Integer> listMaterials=null;
+				int count= client.count;				
+				//quality depends on the features of order
+				//in that case nothing special
+				int quality=product.quality;	
+				if (client.doMeasure){
+					listMaterials=mounter.getMeasuring(client.name,client.getClientPhone(),client.getClientAdress(),prId);
+					summaryPrice = administrator.getPriceMeasuring(listMaterials);			
+					if (client.toBuy(quality, summaryPrice, product.getTermOfDelivery(listMaterials.get(product.title)))){
+							count=listMaterials.get(product.title);
+							}
+					}	
+				//administrator create new order and record client at clients book, order at orders book with the identical number
+				int orderId = administrator.createOrder(client, prId, count, summaryPrice, listMaterials, quality);
+				administrator.getAdvance(orderId);
+				Order order=getOrderFromBook(orderId);
+				if (order.getStatus().equals("advancepay"))
+					{
+					sls.sendOrderToMngr(orderId);
+					if (order.getStatus().equals("storage"))
+						{
+						Shop.administrator.getRemain(orderId);
+						if (order.price ==  order.getAdvance()+order.getRemain())
+							mounter.install(orderId);
+						}
 					}
-			}	
-		//administrator create new order and record client at clients book, order at order sbook
-		int orderId = administrator.createOrder(client, prId, count, summaryPrice, listMaterials, quality);
-		administrator.getAdvance(orderId);
-		sls.sendOrderToMngr(orderId);
-		mounter.install(orderId);
-		}		
+				}
+			}
 	}	
 	
-	public static void setAssortiment(Product[] newAssortiment) {
-		assortiment=newAssortiment;		
+	public static void setAssortment(ArrayList<Product> newAssortment) {
+		assortment=newAssortment;		
 	}
 
-	public static Product bringProduct(int orderId, Product pr) {
+	public static Product bringProduct(int orderId) {
 		//bring product from storage to shop
-		Shop.getOrderFromBook(orderId).setStatus("shop"); 
-		return pr;
-	}
+		Order order=getOrderFromBook(orderId);
+		Shop.getOrderFromBook(orderId).setStatus("shop");
+		return storage.get(orderId);
+		}
 
 	public static double getCashdesk() {
 		return cashdesk;
@@ -96,21 +110,30 @@ public class Shop {
 	}
 
 	public static int addToClientsBook(Client client) {
-		clientsBook.add(clientsBook);
+		clientsBook.add(client);
 		return clientsBook.size();
 	}
 	
-	public static Client getClientsFromBook(int id) {		
-		return (Client) clientsBook.get(id);
+	public static Client getClientFromBook(int id) {		
+		return clientsBook.get(id);
 	}
 	
-	public static int addToOrdersBook(Order order) {
-		ordersBook.add(ordersBook);
-		return ordersBook.size();
+	public static void addToOrdersBook(int id, Order order) {
+		ordersBook.add(id, order);
 	}
 	
 	public static Order getOrderFromBook(int id) {		
-		return (Order) ordersBook.get(id);
+		return ordersBook.get(id);
+	}
+	
+	public static Product getProductFromAssortmentById(int id){
+			return assortment.get(id);
+	}
+
+	public static void sentToStorage(int orderId, Product pr) {		
+		//product at the storage. Change order status
+		storage.add(orderId, pr);
+		getOrderFromBook(orderId).setStatus("storage");
 	}
 	
 }

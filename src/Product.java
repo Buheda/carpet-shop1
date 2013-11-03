@@ -2,7 +2,7 @@
 public class Product {
 	public int id;
 	public String title;
-	private int productId;
+	public int productId;
 	public int quality;
 	public double price;
 	private int existCount;
@@ -10,12 +10,13 @@ public class Product {
 	private double deliveryPrice;
 	private int createTime;
 	
-	private int getExistCount() {
+	public int getExistCount() {
 		return existCount;
 		}		
-	public Product(int idProduct,String prTitle,double prPrice, int prQuality){
+	public Product(int idProduct,String prTitle,int count, double prPrice, int prQuality){
 		id=idProduct;
 		title=prTitle;
+		existCount=count;
 		price=prPrice;
 		quality=prQuality;
 		}
@@ -28,4 +29,6 @@ public class Product {
 	public double getPriceOfDelivery() {
 		return deliveryPrice;
 		}
+
+	
 }

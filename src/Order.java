@@ -7,6 +7,7 @@ public class Order {
 	public String clientPhone;
 	public int productId;
 	public double price;
+	public int count;
 	public HashMap<String, Integer> listMaterials;
 	public int quality;
 	public int delivery;
@@ -14,13 +15,14 @@ public class Order {
 	private double advance;
 	private double remain;
 	
-	public Order(String title,int clId,
-			int idProduct,double summaryPrice, HashMap<String, Integer> materials, int prQuality,
-			 int termOfDelivery) {
+	public Order(String title,int clId, int idProduct, int prCount,double summaryPrice, 
+			HashMap<String, Integer> materials, 
+			int prQuality, int termOfDelivery) {
 		shopTitle=title;
 		clientId=clId;
-		clientName=Shop.getClientsFromBook(clId).name;
-		clientPhone=Shop.getClientsFromBook(clId).getClientPhone();
+		count=prCount;
+		clientName=Shop.getClientFromBook(clId).name;
+		clientPhone=Shop.getClientFromBook(clId).getClientPhone();
 		productId=idProduct;
 		listMaterials=materials;
 		price=summaryPrice;
@@ -40,8 +42,15 @@ public class Order {
 		setStatus("advancepay");
 		advance=money;
 	}
+	public double getAdvance() {
+		return advance;
+	}
 	public void setRemain(double money) {
 		setStatus("remainpay");
 		remain=money;
 	}
+	public double getRemain() {
+		return remain;
+	}
+	
 }
