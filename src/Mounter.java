@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class Mounter {
-	private double workPrice;
+	private int workPrice;
 	public String name;
 	
 	public Mounter(String mName)
@@ -9,23 +9,24 @@ public class Mounter {
 		name=mName;
 	}
 	
-	public HashMap<String, Double> getMeasuring(){
+	public HashMap<String, Integer>  getMeasuring(String clName, String clPhone, String clAdress, int prId){
 		String material=null;//using product
-		double optimalCountProduct=0; // count of using material
-		HashMap<String, Double>  listMaterials=new HashMap<String, Double> (); //array of using material and its count
+		//additional materials may be sell such as basic, so they all at the assortiment
+		int optimalCountProduct=0; // count of using material
+		HashMap<String, Integer>  listMaterials=new HashMap<String, Integer> (); //array of using material and its count
 		listMaterials.put("workPrice",workPrice);
 		int i=1;
 		boolean using=false; 
 		while (using) //select needed materials from all list
 		{
-		listMaterials.put(material,optimalCountProduct);
+		listMaterials.put(material, optimalCountProduct);
 		i++;
 		}
-	return listMaterials;	
+	return listMaterials;
 	}
 	
-	public void install(Order order){
-	//install carpet at client with order
+	public void install(int orderId){
+	//install carpet at client with orderId
 	}
 	
 }
