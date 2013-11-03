@@ -1,27 +1,26 @@
 public class Client {
 public String name;
+//сколько денег клиент готов заплатить за кв. метр покрытия 
 private double money;
 public int count;
 private int quality;
+//сроки ожидания заказа в днях
 private int waitTime;
 
-public Client(String clName,int clWaitTime,double clMoney,int clQuality, int clCount) {
+public Client(String clName,int clWaitTime,double clMoney,int clQuality) {
 	name=clName;
 	money=clMoney;
 	quality=clQuality;
 	waitTime=clWaitTime;
-	count=clCount;
 }
 
 public boolean toBuy(int prQuality, double price, int time) {
 	return ((prQuality>=quality)&&(price<=money)&&(time<=waitTime));
 		}
 
-public double payAdvance(Order order) {
-	double advance=order.price/100*70;
-	//order.setAdvance(advance);
+public void payAdvance(Order order,double advance) {
+	order.setAdvance(advance);
 	money=money-advance;	
-	return advance;
 	}
 
 public void payRemain(Order order) {
